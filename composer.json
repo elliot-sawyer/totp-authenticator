@@ -18,6 +18,8 @@
   ],
   "require": {
     "firesphere/bootstrapmfa": "*",
+    "endroid/qr-code": "*",
+    "lfkeitel/phptotp": "^1.0",
     "silverstripe/framework": "^4@dev"
   },
   "require-dev": {

@@ -1,0 +1,6 @@
+---
+name: TOTPAuthenticator
+---
+SilverStripe\Security\Member:
+  extensions:
+    - SilverstripeElliot\TOTPAuthenticator\TOTPSecondFactorAuthExtension
