@@ -17,7 +17,7 @@
     }
   ],
   "require": {
-    "firesphere/bootstrapmfa": "^4@dev"
+    "firesphere/bootstrapmfa": "^4@dev",
     "silverstripe/framework": "^4@dev"
   },
   "require-dev": {
