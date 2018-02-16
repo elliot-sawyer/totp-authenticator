@@ -1,7 +1,7 @@
 {
   "name": "silverstripe-elliot/totp-authenticator",
   "description": "Enable 2FA authentication with TOTP",
-  "type": "silverstripe-module",
+  "type": "silverstripe-vendormodule",
   "license": "BSD-3-Clause",
   "keywords": [
     "silverstripe",
