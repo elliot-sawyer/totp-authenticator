@@ -4,3 +4,8 @@ name: TOTPAuthenticator
 SilverStripe\Security\Member:
   extensions:
     - SilverstripeElliot\TOTPAuthenticator\TOTPSecondFactorAuthExtension
+SilverStripe\Core\Injector\Injector:
+  SilverStripe\Security\Security:
+    properties:
+      Authenticators:
+        totp: %$SilverstripeElliot\TOTPAuthenticator\TOTPAuthenticator

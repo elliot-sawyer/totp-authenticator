@@ -4,8 +4,8 @@
 namespace SilverstripeElliot\TOTPAuthenticator;
 
 use SilverStripe\ORM\DataExtension;
-use SilverStripe\Core\Environment;
-//use lfkeitel\phptotp\{Base32,Totp};
+
+use lfkeitel\phptotp\{Base32,Totp};
 use SilverStripe\SiteConfig\SiteConfig;
 use SilverStripe\Forms\{FieldList,LiteralField,ToggleCompositeField};
 

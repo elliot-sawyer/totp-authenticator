@@ -1,0 +1,7 @@
+---
+Name: totpsecurity
+After:
+  - '#coresecurity'
+---
+SilverstripeElliot\TOTPAuthenticator\TOTPLoginForm:
+  authenticator_class: SilverstripeElliot\TOTPAuthenticator\TOTPAuthenticator
