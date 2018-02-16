@@ -34,6 +34,5 @@
   "support": {
     "issues": "https://github.com/silverstripe-elliot/totp-authenticator/issues",
     "source": "https://github.com/silverstripe-elliot/totp-authenticator"
-  },
-  "target-dir": "vendor/silverstripe-elliot/"
+  }
 }
