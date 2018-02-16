@@ -25,14 +25,14 @@ class TOTPAuthenticator extends BootstrapMFAAuthenticator
         // Continue if we have a valid member
         if ($member && $member instanceof Member) {
 
-            if(!isset($data['2FAToken'])) {
+            if(!isset($data['token'])) {
                 $member->registerFailedLogin();
                 return false;
             } else {
 
                 $secret = Base32::decode($member->TOTPSecret);
                 $key = (new Totp())->GenerateToken($secret);
-                $user_submitted_key = $data['2FAToken'];
+                $user_submitted_key = $data['token'];
 
 
                 if($user_submitted_key !== $key) {

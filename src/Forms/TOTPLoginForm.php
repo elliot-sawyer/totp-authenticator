@@ -12,7 +12,7 @@ class TOTPLoginForm extends MFALoginForm
         $name = self::DEFAULT_NAME
     ) {
         $this->controller = $controller;
-        $validator = RequiredFields::create(['2FAToken']);
+        $validator = RequiredFields::create(['token']);
         $fields = $this->getFormFields();
         $actions = $this->getFormActions();
 
@@ -22,7 +22,7 @@ class TOTPLoginForm extends MFALoginForm
     public function getFormFields()
     {
         $fields = FieldList::create();
-        $fields->push(PasswordField::create('2FAToken', '2FA Code'));
+        $fields->push(PasswordField::create('token', '2FA Code'));
 
         $backURL = $this->controller->getRequest()->getVar('BackURL');
         if ($backURL) {

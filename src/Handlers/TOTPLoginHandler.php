@@ -19,6 +19,9 @@ class TOTPLoginHandler extends MFALoginHandler
 
         $this->request['BackURL'] = !empty($session->get('MFALogin.BackURL')) ? $session->get('MFALogin.BackURL') : '';
         $member = $this->authenticator->validateTOTP($data, $request, $message);
+        if(!$member) {
+            $member = parent::validate($data, $form, $request);
+        }
 
         if ($member instanceof Member) {
 
