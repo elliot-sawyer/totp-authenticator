@@ -1,5 +1,5 @@
 {
-  "name": "silverstripe-elliot/totp-authenticator",
+  "name": "elliot-sawyer/totp-authenticator",
   "description": "Enable 2FA authentication with TOTP",
   "type": "silverstripe-vendormodule",
   "license": "BSD-3-Clause",
@@ -12,15 +12,14 @@
   ],
   "authors": [
     {
-      "name": "Elliot Sawyer",
-      "email": "elliot@silverstripe.com"
+      "name": "Elliot Sawyer"
     }
   ],
   "require": {
-    "firesphere/bootstrapmfa": "*",
-    "endroid/qr-code": "*",
+    "firesphere/bootstrapmfa": "^1.0",
+    "endroid/qr-code": "3.2.12",
     "lfkeitel/phptotp": "^1.0",
-    "silverstripe/framework": "^4@dev"
+    "silverstripe/framework": "^4"
   },
   "require-dev": {
     "phpunit/phpunit": "^5.7"
@@ -32,7 +31,7 @@
     }
   },
   "support": {
-    "issues": "https://github.com/silverstripe-elliot/totp-authenticator/issues",
-    "source": "https://github.com/silverstripe-elliot/totp-authenticator"
+    "issues": "https://github.com/elliot-sawyer/totp-authenticator/issues",
+    "source": "https://github.com/elliot-sawyer/totp-authenticator"
   }
 }
