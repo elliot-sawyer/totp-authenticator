@@ -3,5 +3,10 @@ Name: totpsecurity
 After:
   - '#coresecurity'
 ---
+SilverStripe\Core\Injector\Injector:
+  SilverStripe\Security\Security:
+    properties:
+      Authenticators:
+        totp: %$SilverstripeElliot\TOTPAuthenticator\TOTPAuthenticator
 SilverstripeElliot\TOTPAuthenticator\TOTPLoginForm:
   authenticator_class: SilverstripeElliot\TOTPAuthenticator\TOTPAuthenticator
