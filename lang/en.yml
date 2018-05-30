@@ -1,8 +1,8 @@
 en:
-  SilverstripeElliot\TOTPAuthenticator\TOTPAuthenticator:
+  ElliotSawyer\TOTPAuthenticator\TOTPAuthenticator:
     NOMEMBER: 'Member not found'
     NOTOKEN: 'No token sent'
     TOTPFAILED: 'TOTP Failed'
-  SilverstripeElliot\TOTPAuthenticator\TOTPForm:
+  ElliotSawyer\TOTPAuthenticator\TOTPForm:
     TITLE: 'TOTP Second factor authentication'
     TOTPCODE: 'TOTP Code'

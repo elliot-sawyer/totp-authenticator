@@ -1,7 +1,7 @@
 <?php
 
 
-namespace SilverstripeElliot\TOTPAuthenticator;
+namespace ElliotSawyer\TOTPAuthenticator;
 
 use Psr\Container\NotFoundExceptionInterface;
 use SilverStripe\Control\HTTPRequest;
@@ -16,7 +16,7 @@ use Firesphere\BootstrapMFA\Handlers\BootstrapMFALoginHandler;
 
 /**
  * Class TOTPLoginHandler
- * @package SilverstripeElliot\TOTPAuthenticator
+ * @package ElliotSawyer\TOTPAuthenticator
  */
 class TOTPLoginHandler extends BootstrapMFALoginHandler
 {

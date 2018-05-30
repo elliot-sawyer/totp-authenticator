@@ -1,6 +1,6 @@
 <?php
 
-namespace SilverstripeElliot\TOTPAuthenticator;
+namespace ElliotSawyer\TOTPAuthenticator;
 
 use Firesphere\BootstrapMFA\Authenticators\BootstrapMFAAuthenticator;
 use Firesphere\BootstrapMFA\Handlers\MFALoginHandler;
@@ -12,7 +12,7 @@ use SilverStripe\Security\Member;
 
 /**
  * Class TOTPAuthenticator
- * @package SilverstripeElliot\TOTPAuthenticator
+ * @package ElliotSawyer\TOTPAuthenticator
  */
 class TOTPAuthenticator extends BootstrapMFAAuthenticator
 {

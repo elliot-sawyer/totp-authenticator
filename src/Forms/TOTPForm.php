@@ -1,6 +1,6 @@
 <?php
 
-namespace SilverstripeElliot\TOTPAuthenticator;
+namespace ElliotSawyer\TOTPAuthenticator;
 
 use Firesphere\BootstrapMFA\Forms\BootstrapMFALoginForm;
 use SilverStripe\Control\RequestHandler;
@@ -11,7 +11,7 @@ use SilverStripe\Forms\PasswordField;
 
 /**
  * Class TOTPForm
- * @package SilverstripeElliot\TOTPAuthenticator
+ * @package ElliotSawyer\TOTPAuthenticator
  */
 class TOTPForm extends BootstrapMFALoginForm
 {

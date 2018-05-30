@@ -1,7 +1,7 @@
 <?php
 
 
-namespace SilverstripeElliot\TOTPAuthenticator;
+namespace ElliotSawyer\TOTPAuthenticator;
 
 use Firesphere\BootstrapMFA\Providers\BootstrapMFAProvider;
 use Firesphere\BootstrapMFA\Providers\MFAProvider;
@@ -15,7 +15,7 @@ use SilverStripe\Security\PasswordEncryptor_NotFoundException;
 
 /**
  * Class TOTPProvider
- * @package SilverstripeElliot\TOTPAuthenticator
+ * @package ElliotSawyer\TOTPAuthenticator
  */
 class TOTPProvider extends BootstrapMFAProvider implements MFAProvider
 {

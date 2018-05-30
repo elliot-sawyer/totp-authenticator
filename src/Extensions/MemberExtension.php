@@ -1,6 +1,6 @@
 <?php
 
-namespace SilverstripeElliot\TOTPAuthenticator;
+namespace ElliotSawyer\TOTPAuthenticator;
 
 use Endroid\QrCode\Exception\InvalidWriterException;
 use Endroid\QrCode\QrCode;
@@ -15,7 +15,7 @@ use SilverStripe\SiteConfig\SiteConfig;
 /**
  * Class TOTPSecondFactorAuthExtension
  *
- * @package SilverstripeElliot\TOTPAuthenticator
+ * @package ElliotSawyer\TOTPAuthenticator
  * @property MemberExtension $owner
  * @property string $TOTPSecret
  */

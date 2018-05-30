@@ -1,3 +1,3 @@
 SilverStripe\Security\Member:
   extensions:
-    - SilverstripeElliot\TOTPAuthenticator\MemberExtension
+    - ElliotSawyer\TOTPAuthenticator\MemberExtension
