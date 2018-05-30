@@ -3,7 +3,7 @@
 namespace SilverstripeElliot\TOTPAuthenticator;
 
 use Firesphere\BootstrapMFA\Authenticators\BootstrapMFAAuthenticator;
-use Firesphere\BootstrapMFA\Handlers\BootstrapMFALoginHandler;
+use Firesphere\BootstrapMFA\Handlers\MFALoginHandler;
 use lfkeitel\phptotp\Base32;
 use lfkeitel\phptotp\Totp;
 use SilverStripe\Control\HTTPRequest;
@@ -34,7 +34,7 @@ class TOTPAuthenticator extends BootstrapMFAAuthenticator
      */
     public function validateTOTP($data, $request, &$result)
     {
-        $memberID = $request->getSession()->get(BootstrapMFALoginHandler::SESSION_KEY . '.MemberID');
+        $memberID = $request->getSession()->get(BootstrapMFAAuthenticator::SESSION_KEY . '.MemberID');
 
         // First, let's see if we know the member
         /** @var Member $member */

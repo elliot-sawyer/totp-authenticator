@@ -2,7 +2,7 @@
 
 namespace SilverstripeElliot\TOTPAuthenticator;
 
-use Firesphere\BootstrapMFA\Forms\MFALoginForm;
+use Firesphere\BootstrapMFA\Forms\BootstrapMFALoginForm;
 use SilverStripe\Control\RequestHandler;
 use SilverStripe\Forms\FieldList;
 use SilverStripe\Forms\FormAction;
@@ -13,7 +13,7 @@ use SilverStripe\Forms\PasswordField;
  * Class TOTPForm
  * @package SilverstripeElliot\TOTPAuthenticator
  */
-class TOTPForm extends MFALoginForm
+class TOTPForm extends BootstrapMFALoginForm
 {
     /**
      * TOTPForm constructor.

@@ -12,13 +12,13 @@ use SilverStripe\ORM\ValidationResult;
 use SilverStripe\Security\Member;
 use SilverStripe\Security\PasswordEncryptor_NotFoundException;
 use SilverStripe\Security\Security;
-use Firesphere\BootstrapMFA\Handlers\MFALoginHandler;
+use Firesphere\BootstrapMFA\Handlers\BootstrapMFALoginHandler;
 
 /**
  * Class TOTPLoginHandler
  * @package SilverstripeElliot\TOTPAuthenticator
  */
-class TOTPLoginHandler extends MFALoginHandler
+class TOTPLoginHandler extends BootstrapMFALoginHandler
 {
     /**
      * @var array
