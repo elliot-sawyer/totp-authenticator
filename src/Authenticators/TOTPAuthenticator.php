@@ -1,49 +1,70 @@
 <?php
+
 namespace SilverstripeElliot\TOTPAuthenticator;
 
-use Firesphere\BootstrapMFA\BootstrapMFAAuthenticator;
+use Firesphere\BootstrapMFA\Authenticators\BootstrapMFAAuthenticator;
+use Firesphere\BootstrapMFA\Handlers\MFALoginHandler;
+use lfkeitel\phptotp\Base32;
+use lfkeitel\phptotp\Totp;
+use SilverStripe\Control\HTTPRequest;
 use SilverStripe\ORM\ValidationResult;
 use SilverStripe\Security\Member;
-use lfkeitel\phptotp\{Totp,Base32};
-use SilverStripe\Security\DefaultAdminService;
 
+/**
+ * Class TOTPAuthenticator
+ * @package SilverstripeElliot\TOTPAuthenticator
+ */
 class TOTPAuthenticator extends BootstrapMFAAuthenticator
 {
+    /**
+     * @param string $link
+     * @return \SilverStripe\Security\MemberAuthenticator\LoginHandler|static
+     */
     public function getLoginHandler($link)
     {
         return TOTPLoginHandler::create($link, $this);
     }
 
-    public function validateTOTP($data, $request, &$message)
+    /**
+     * @param $data
+     * @param HTTPRequest $request
+     * @param ValidationResult $result
+     * @return bool|null|Member
+     * @throws \Exception
+     */
+    public function validateTOTP($data, $request, &$result)
     {
-        $memberID = $request->getSession()->get('MFALogin.MemberID');
+        $memberID = $request->getSession()->get(BootstrapMFAAuthenticator::SESSION_KEY . '.MemberID');
 
         // First, let's see if we know the member
         /** @var Member $member */
-        $member = Member::get()->byID(['ID' => $memberID]);
+        $member = Member::get()->byID($memberID);
 
         // Continue if we have a valid member
         if ($member && $member instanceof Member) {
-
-            if(!isset($data['token'])) {
+            if (!isset($data['token'])) {
                 $member->registerFailedLogin();
-                return false;
-            } else {
 
+                $result->addError(_t(self::class . '.NOTOKEN', 'No token sent'));
+            } else {
                 $secret = Base32::decode($member->TOTPSecret);
                 $key = (new Totp())->GenerateToken($secret);
                 $user_submitted_key = $data['token'];
 
 
-                if($user_submitted_key !== $key) {
-                    return false;
+                if ($user_submitted_key !== $key) {
+                    $result->addError(_t(self::class . '.TOTPFAILED', 'TOTP Failed'));
                 }
             }
 
 
-            return $member;
-
+            if ($result->isValid()) {
+                return $member;
+            }
         }
-        return null;
+
+        $result->addError(_t(self::class . '.NOMEMBER', 'Member not found'));
+
+        return $result;
     }
 }
