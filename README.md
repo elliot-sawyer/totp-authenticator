@@ -2,7 +2,7 @@
 
 This is a time-based token authenticator for SilverStripe. It allows users with apps such as Google Authenticator or Authy to generate a code to be used for logging into a SilverStripe installation. Backup codes are also available to the user, in case their second factor is lost, stolen, or otherwise unavailable.
 
-This is based off Firesphere's MFABootstrap module, and has been tested with a vanilla installation of CWP 2.0 and SilverStripe 4.1.1
+This extends and builds from Firesphere's MFABootstrap module, and has been tested with a vanilla installation of CWP 2.0 and SilverStripe 4.1.1
 
 ## Installation
 `composer require silverstripe-elliot/totp-authenticator`
