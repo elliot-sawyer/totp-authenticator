@@ -56,7 +56,7 @@ class TOTPForm extends BootstrapMFALoginForm
     {
         $action = FieldList::create(
             [
-                FormAction::create('validateTOTP', 'Validate')
+                FormAction::create('validateTOTP', _t(self::class . '.VALIDATETOTP', 'Validate'))
             ]
         );
 

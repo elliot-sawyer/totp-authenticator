@@ -13,7 +13,7 @@ use SilverStripe\ORM\DataExtension;
 use SilverStripe\SiteConfig\SiteConfig;
 
 /**
- * Class TOTPSecondFactorAuthExtension
+ * Class MemberExtension
  *
  * @package ElliotSawyer\TOTPAuthenticator
  * @property MemberExtension $owner
@@ -52,7 +52,7 @@ class MemberExtension extends DataExtension
             $qrcodeURI = $this->GoogleAuthenticatorQRCode();
             $fields->addFieldToTab('Root.Main', ToggleCompositeField::create(
                 null,
-                'Second Factor Token Secret',
+                _t(self::class . '.CMSTOGGLEQRCODELABEL', 'Second Factor Token Secret'),
                 LiteralField::create(null, sprintf("<img src=\"%s\" />", $qrcodeURI))
             ));
             $fields->removeByName('TOTPSecret');
