@@ -4,6 +4,14 @@ This is a time-based token authenticator for SilverStripe. It allows users with 
 
 This extends and builds from Firesphere's MFABootstrap module, and has been tested with a vanilla installation of CWP 2.0 and SilverStripe 4.1.1
 
+## Supported Authenticators
+It is difficult to support an exhaustive list of authenticator apps, but for the purposes of an initial release the following authenticators are supported.
+
+* Google Authenticator
+* Authy
+
+If you know of any others that can be added to this list, raise a pull request along with any code and unit tests you've added to ensure support.
+
 ## Installation
 `composer require elliot-sawyer/totp-authenticator`
 
