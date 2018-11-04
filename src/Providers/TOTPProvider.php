@@ -12,6 +12,7 @@ use SilverStripe\ORM\ValidationException;
 use SilverStripe\ORM\ValidationResult;
 use SilverStripe\Security\Member;
 use SilverStripe\Security\PasswordEncryptor_NotFoundException;
+use ElliotSawyer\TOTPAuthenticator\TOTPAuthenticator;
 
 /**
  * Class TOTPProvider
@@ -38,7 +39,10 @@ class TOTPProvider extends BootstrapMFAProvider implements MFAProvider
                 $result->addError('Invalid or missing second factor token');
             } else {
                 $secret = Base32::decode($member->TOTPSecret);
-                $key = (new Totp())->GenerateToken($secret);
+                $algorithm = TOTPAuthenticator::get_algorithm();
+
+                $totp = new Totp($algorithm);
+                $key = $totp->GenerateToken($secret);
                 $user_submitted_key = $token;
                 if ($user_submitted_key !== $key) {
                     $result->addError('Invalid or missing second factor token');

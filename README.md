@@ -32,6 +32,14 @@ SilverStripe\Core\Injector\Injector:
 
 ```
 
+### Algorithms
+Google Authenticator and Authy only support tokens generated with SHA-1. Other authenticators MAY implement SHA-256 or SHA-512 as outlined in [RFC6238](https://tools.ietf.org/html/rfc6238). You may use the Config API to adjust this algorithm if you need to support a specific TOTP authenticator
+
+```
+ElliotSawyer\TOTPAuthenticator\TOTPAuthenticator:
+  algorithm: 'sha512'
+```
+
 ## Usage
 
 1. Login to CMS as usual, taking care to use the "default" authenticator. Visit the Security admin and select your user. Ignore the TOTPSecret field for now. Tick the "MFA Enabled" and “Reset MFA codes” and save the Member.
