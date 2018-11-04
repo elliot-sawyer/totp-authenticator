@@ -3,10 +3,13 @@
 namespace ElliotSawyer\TOTPAuthenticator;
 
 use Firesphere\BootstrapMFA\Authenticators\BootstrapMFAAuthenticator;
-use lfkeitel\phptotp\Base32;
-use lfkeitel\phptotp\Totp;
 use SilverStripe\Control\HTTPRequest;
 use SilverStripe\Core\Config\Configurable;
+use Firesphere\BootstrapMFA\Forms\BootstrapMFALoginForm;
+use Firesphere\BootstrapMFA\Handlers\BootstrapMFALoginHandler;
+use Firesphere\BootstrapMFA\Interfaces\MFAAuthenticator;
+use OTPHP\TOTP;
+use SilverStripe\Core\Injector\Injector;
 use SilverStripe\ORM\ValidationResult;
 use SilverStripe\Security\Member;
 
@@ -14,7 +17,7 @@ use SilverStripe\Security\Member;
  * Class TOTPAuthenticator
  * @package ElliotSawyer\TOTPAuthenticator
  */
-class TOTPAuthenticator extends BootstrapMFAAuthenticator
+class TOTPAuthenticator extends BootstrapMFAAuthenticator implements MFAAuthenticator
 {
     use Configurable;
 
@@ -25,76 +28,7 @@ class TOTPAuthenticator extends BootstrapMFAAuthenticator
      * a specific TOTP authenticator
      */
     private static $algorithm = 'sha1';
-
-
-    /**
-     * @param string $link
-     * @return \SilverStripe\Security\MemberAuthenticator\LoginHandler|static
-     */
-    public function getLoginHandler($link)
-    {
-        return TOTPLoginHandler::create($link, $this);
-    }
-
-    /**
-     * @param array $data
-     * @param HTTPRequest $request
-     * @param ValidationResult $result
-     * @return bool|null|Member
-     * @throws \Exception
-     */
-    public function validateTOTP($data, $request, &$result)
-    {
-        $memberID = $request->getSession()->get(BootstrapMFAAuthenticator::SESSION_KEY . '.MemberID');
-
-        // First, let's see if we know the member
-        /** @var Member $member */
-        $member = Member::get()->byID($memberID);
-
-        // Continue if we have a valid member
-        if ($member && $member instanceof Member) {
-            if (!isset($data['token'])) {
-                $member->registerFailedLogin();
-
-                $result->addError(_t(self::class . '.NOTOKEN', 'No token sent'));
-            } else {
-                $secret = Base32::decode($member->TOTPSecret);
-                $key = $this->getTokenFromTOTP($secret);
-                $user_submitted_key = $data['token'];
-
-                if ($user_submitted_key !== $key) {
-                    $result->addError(_t(self::class . '.TOTPFAILED', 'TOTP Failed'));
-                }
-            }
-
-
-            if ($result->isValid()) {
-                return $member;
-            }
-        }
-
-        $result->addError(_t(self::class . '.NOMEMBER', 'Member not found'));
-
-        return $result;
-    }
-
-    /**
-     * Given a TOTP secret, use Totp to resolve to a one time token
-     *
-     * @param string $secret
-     * @param string $algorithm If not provided, will default to the configured algorithm
-     * @return bool|int|string
-     */
-    protected function getTokenFromTOTP($secret, $algorithm = '')
-    {
-        if (!$algorithm) {
-            $algorithm = self::get_algorithm();
-        }
-
-        $totp = new Totp($algorithm);
-        return $totp->GenerateToken($secret);
-    }
-
+    
     /**
      * Get configured algorithm for TOTP Authenticator
      *
@@ -109,5 +43,67 @@ class TOTPAuthenticator extends BootstrapMFAAuthenticator
         return in_array(strtolower($algorithm), ['sha1', 'sha256', 'sha512'])
             ? $algorithm
             : 'sha1';
+    }
+
+    /**
+     * @param array $data
+     * @param HTTPRequest $request
+     * @param $token
+     * @param ValidationResult $result
+     * @return bool|null|Member
+     * @throws \Exception
+     */
+    public function verifyMFA($data, $request, $token, &$result)
+    {
+        $memberID = $request->getSession()->get(BootstrapMFAAuthenticator::SESSION_KEY . '.MemberID');
+
+        // First, let's see if we know the member
+        /** @var Member|null $member */
+        $member = Member::get()->byID($memberID);
+
+        // Continue if we have a valid member
+        if ($member && $member instanceof Member) {
+            if (!$token) {
+                $member->registerFailedLogin();
+
+                $result->addError(_t(self::class . '.NOTOKEN', 'No token sent'));
+            } else {
+                /** @var TOTPProvider $provider */
+                $provider = Injector::inst()->get(TOTPProvider::class);
+                $provider->setMember($member);
+                /** @var TOTP $totp */
+                $totp = $provider->fetchToken($token);
+
+
+                if (!$totp->verify($token)) {
+                    $result->addError(_t(self::class . '.TOTPFAILED', 'TOTP Failed'));
+                }
+            }
+
+
+            if ($result->isValid()) {
+                return $member;
+            }
+        } else {
+            $result->addError(_t(self::class . '.NOMEMBER', 'Member not found'));
+        }
+    }
+
+    /**
+     * @param BootstrapMFALoginHandler $controller
+     * @param string $name
+     * @return TOTPForm|BootstrapMFALoginForm
+     */
+    public function getMFAForm($controller, $name)
+    {
+        return TOTPForm::create($controller, $name, $this);
+    }
+
+    /**
+     * @return string
+     */
+    public function getTokenField()
+    {
+        return 'token';
     }
 }

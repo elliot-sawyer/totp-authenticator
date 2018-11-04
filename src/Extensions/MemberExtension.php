@@ -2,21 +2,21 @@
 
 namespace ElliotSawyer\TOTPAuthenticator;
 
-use Endroid\QrCode\Exception\InvalidWriterException;
 use Endroid\QrCode\QrCode;
-use lfkeitel\phptotp\Base32;
-use lfkeitel\phptotp\Totp;
+use OTPHP\TOTP;
+use ParagonIE\ConstantTime\Base32;
 use SilverStripe\Forms\FieldList;
 use SilverStripe\Forms\LiteralField;
 use SilverStripe\Forms\ToggleCompositeField;
 use SilverStripe\ORM\DataExtension;
+use SilverStripe\Security\Member;
 use SilverStripe\SiteConfig\SiteConfig;
 
 /**
  * Class MemberExtension
  *
  * @package ElliotSawyer\TOTPAuthenticator
- * @property MemberExtension $owner
+ * @property Member|MemberExtension $owner
  * @property string $TOTPSecret
  */
 class MemberExtension extends DataExtension
@@ -36,28 +36,22 @@ class MemberExtension extends DataExtension
         // Only regenerate if there is no secret and MFA is not enabled yet
         // Inherits MFAEnabled from Bootstrap object extension
         if (!$this->owner->TOTPSecret || !$this->owner->MFAEnabled) {
-            $secret = Totp::GenerateSecret(16);
-            $secret = Base32::encode($secret);
+            $secret = Base32::encodeUpper(random_bytes(128)); // We generate our own 1024 bits secret
             $this->owner->TOTPSecret = $secret;
         }
     }
 
     /**
      * @param FieldList $fields
-     * @throws InvalidWriterException
      */
     public function updateCMSFields(FieldList $fields)
     {
-        if (!$this->owner->exists()) {
-            $fields->removeByName('TOTPSecret');
-        }
-
-        if (strlen($this->owner->TOTPSecret)) {
-            $qrcodeURI = $this->GoogleAuthenticatorQRCode();
+        if ($this->owner->TOTPSecret !== '') {
+            $qrcodeURI = $this->getQRCode();
             $fields->addFieldToTab('Root.Main', ToggleCompositeField::create(
                 null,
-                _t(self::class . '.CMSTOGGLEQRCODELABEL', 'Second Factor Token Secret'),
-                LiteralField::create(null, sprintf("<img src=\"%s\" />", $qrcodeURI))
+                'Second Factor Token Secret',
+                LiteralField::create(null, sprintf('<img src="%s" />', $qrcodeURI))
             ));
             $fields->removeByName('TOTPSecret');
         }
@@ -65,33 +59,29 @@ class MemberExtension extends DataExtension
 
     /**
      * @return string
-     * @throws InvalidWriterException
      */
-    public function GoogleAuthenticatorQRCode()
+    protected function getQRCode()
     {
         $qrCode = new QrCode($this->generateOTPAuthString());
         $qrCode->setSize(300);
         $qrCode->setWriterByName('png');
-        $qrcodeURI = $qrCode->writeDataUri();
 
-        return $qrcodeURI;
+        return $qrCode->writeDataUri();
     }
 
     /**
      * @return string
      */
-    public function generateOTPAuthString()
+    protected function generateOTPAuthString()
     {
-        $label = urlencode(SiteConfig::current_site_config()->Title);
+        $issuer = SiteConfig::current_site_config()->Title;
         $secret = $this->owner->TOTPSecret;
-        $email = $this->owner->Email;
+        $label = $this->owner->Email;
 
-        return sprintf(
-            'otpauth://totp/%s:%s?secret=%s&issuer=%s',
-            $label,
-            $email,
-            $secret,
-            $label
-        );
+        $totp = TOTP::create($secret);
+        $totp->setIssuer($issuer);
+        $totp->setLabel($label);
+
+        return $totp->getProvisioningUri();
     }
 }
