@@ -24,8 +24,13 @@
     "require-dev": {
         "phpunit/phpunit": "^5.7"
     },
+    "autoload": {
+        "psr-4": {
+            "ElliotSawyer\\TOTPAuthenticator\\": "src/",
+            "ElliotSawyer\\TOTPAuthenticator\\Tests\\": "tests/"
+        }
+    },
     "extra": {
-        "installer-name": "totp-authenticator",
         "branch-alias": {
             "dev-master": "1.0.x-dev"
         }
