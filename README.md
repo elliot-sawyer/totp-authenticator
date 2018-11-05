@@ -1,3 +1,5 @@
+[![Code Coverage](https://scrutinizer-ci.com/g/elliot-sawyer/totp-authenticator/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/elliot-sawyer/totp-authenticator/?branch=master)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/elliot-sawyer/totp-authenticator/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/elliot-sawyer/totp-authenticator/?branch=master)
 # SilverStripe TOTP (Time-based One Time Password) Authenticator
 
 This is a time-based token authenticator for SilverStripe. It allows users with apps such as Google Authenticator or Authy to generate a code to be used for logging into a SilverStripe installation. Backup codes are also available to the user, in case their second factor is lost, stolen, or otherwise unavailable.
