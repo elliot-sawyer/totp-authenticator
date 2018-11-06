@@ -19,7 +19,8 @@
         "firesphere/bootstrapmfa": "dev-master#f0fc8eb861b7e5dca3398dd9f59a382f5cdf5a23",
         "endroid/qr-code": "3.2.12",
         "lfkeitel/phptotp": "^1.0",
-        "silverstripe/framework": "^4"
+        "silverstripe/framework": "^4",
+        "silverstripe/siteconfig": "^4"
     },
     "require-dev": {
         "phpunit/phpunit": "^5.7",
