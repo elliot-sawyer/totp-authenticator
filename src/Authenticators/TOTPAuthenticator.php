@@ -3,13 +3,12 @@
 namespace ElliotSawyer\TOTPAuthenticator;
 
 use Firesphere\BootstrapMFA\Authenticators\BootstrapMFAAuthenticator;
-use Firesphere\BootstrapMFA\Handlers\MFALoginHandler;
 use lfkeitel\phptotp\Base32;
 use lfkeitel\phptotp\Totp;
 use SilverStripe\Control\HTTPRequest;
+use SilverStripe\Core\Config\Configurable;
 use SilverStripe\ORM\ValidationResult;
 use SilverStripe\Security\Member;
-use SilverStripe\Core\Config\Configurable;
 
 /**
  * Class TOTPAuthenticator
@@ -38,7 +37,7 @@ class TOTPAuthenticator extends BootstrapMFAAuthenticator
     }
 
     /**
-     * @param $data
+     * @param array $data
      * @param HTTPRequest $request
      * @param ValidationResult $result
      * @return bool|null|Member
@@ -60,11 +59,8 @@ class TOTPAuthenticator extends BootstrapMFAAuthenticator
                 $result->addError(_t(self::class . '.NOTOKEN', 'No token sent'));
             } else {
                 $secret = Base32::decode($member->TOTPSecret);
-                $algorithm = self::get_algorithm();
-                $totp = new Totp($algorithm);
-                $key = $totp->GenerateToken($secret);
+                $key = $this->getTokenFromTOTP($secret);
                 $user_submitted_key = $data['token'];
-
 
                 if ($user_submitted_key !== $key) {
                     $result->addError(_t(self::class . '.TOTPFAILED', 'TOTP Failed'));
@@ -80,6 +76,23 @@ class TOTPAuthenticator extends BootstrapMFAAuthenticator
         $result->addError(_t(self::class . '.NOMEMBER', 'Member not found'));
 
         return $result;
+    }
+
+    /**
+     * Given a TOTP secret, use Totp to resolve to a one time token
+     *
+     * @param string $secret
+     * @param string $algorithm If not provided, will default to the configured algorithm
+     * @return bool|int|string
+     */
+    protected function getTokenFromTOTP($secret, $algorithm = '')
+    {
+        if (!$algorithm) {
+            $algorithm = self::get_algorithm();
+        }
+
+        $totp = new Totp($algorithm);
+        return $totp->GenerateToken($secret);
     }
 
     /**

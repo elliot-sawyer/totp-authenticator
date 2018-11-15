@@ -45,7 +45,9 @@ class TOTPProvider extends BootstrapMFAProvider implements MFAProvider
                 $key = $totp->GenerateToken($secret);
                 $user_submitted_key = $token;
                 if ($user_submitted_key !== $key) {
-                    $result->addError(_t(self::class . '.INVALIDORMISSINGTOKEN', 'Invalid or missing second factor token'));
+                    $result->addError(
+                        _t(self::class . '.INVALIDORMISSINGTOKEN', 'Invalid or missing second factor token')
+                    );
                 } else {
                     return $this->member;
                 }

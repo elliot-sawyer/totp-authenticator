@@ -1,37 +1,46 @@
 {
-  "name": "elliot-sawyer/totp-authenticator",
-  "description": "Enable 2FA authentication with TOTP",
-  "type": "silverstripe-vendormodule",
-  "license": "BSD-3-Clause",
-  "keywords": [
-    "silverstripe",
-    "2-factor",
-    "authentication",
-    "module",
-    "security"
-  ],
-  "authors": [
-    {
-      "name": "Elliot Sawyer"
-    }
-  ],
-  "require": {
-    "firesphere/bootstrapmfa": "dev-master#f0fc8eb861b7e5dca3398dd9f59a382f5cdf5a23",
-    "endroid/qr-code": "3.2.12",
-    "lfkeitel/phptotp": "^1.0",
-    "silverstripe/framework": "^4"
-  },
-  "require-dev": {
-    "phpunit/phpunit": "^5.7"
-  },
-  "extra": {
-    "installer-name": "totp-authenticator",
-    "branch-alias": {
-      "dev-master": "1.0.x-dev"
-    }
-  },
-  "support": {
-    "issues": "https://github.com/elliot-sawyer/totp-authenticator/issues",
-    "source": "https://github.com/elliot-sawyer/totp-authenticator"
-  }
+    "name": "elliot-sawyer/totp-authenticator",
+    "description": "Enable 2FA authentication with TOTP",
+    "type": "silverstripe-vendormodule",
+    "license": "BSD-3-Clause",
+    "keywords": [
+        "silverstripe",
+        "2-factor",
+        "authentication",
+        "module",
+        "security"
+    ],
+    "authors": [
+        {
+            "name": "Elliot Sawyer"
+        }
+    ],
+    "require": {
+        "firesphere/bootstrapmfa": "dev-master#f0fc8eb861b7e5dca3398dd9f59a382f5cdf5a23",
+        "endroid/qr-code": "3.2.12",
+        "lfkeitel/phptotp": "^1.0",
+        "silverstripe/framework": "^4",
+        "silverstripe/siteconfig": "^4"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^5.7",
+        "squizlabs/php_codesniffer": "^3.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "ElliotSawyer\\TOTPAuthenticator\\": "src/",
+            "ElliotSawyer\\TOTPAuthenticator\\Tests\\": "tests/"
+        }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0.x-dev"
+        }
+    },
+    "support": {
+        "issues": "https://github.com/elliot-sawyer/totp-authenticator/issues",
+        "source": "https://github.com/elliot-sawyer/totp-authenticator"
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
 }
