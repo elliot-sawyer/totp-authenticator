@@ -25,7 +25,7 @@ class MemberExtension extends DataExtension
      * @var array
      */
     private static $db = [
-        'TOTPSecret' => 'Varchar(1024)'
+        'TOTPSecret' => 'Varchar(1024)',
     ];
 
     /**
@@ -48,6 +48,10 @@ class MemberExtension extends DataExtension
      */
     public function updateCMSFields(FieldList $fields)
     {
+        if (!$this->owner->exists()) {
+            $fields->removeByName('TOTPSecret');
+        }
+
         if (strlen($this->owner->TOTPSecret)) {
             $qrcodeURI = $this->GoogleAuthenticatorQRCode();
             $fields->addFieldToTab('Root.Main', ToggleCompositeField::create(
